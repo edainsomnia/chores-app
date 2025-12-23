@@ -1,0 +1,848 @@
+/* DARK MODE STYLES */
+:root {
+    --primary-color: #3793ff;      /* Ein leuchtenderes Blau für dunklen Hintergrund */
+    --success-color: #4cd964;      /* Helles Grün für Kontrast */
+    --bg-dark: #121212;            /* Tiefschwarz/Anthrazit */
+    --bg-card: #1e1e1e;            /* Etwas helleres Grau für Karten */
+    --bg-input: #2c2c2c;           /* Farbe für Dropdowns */
+    --text-main: #e0e0e0;          /* Fast weißer Text */
+    --text-muted: #a0a0a0;         /* Grauer Text für weniger Wichtiges */
+    --border-color: #333333;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    background-color: var(--bg-card);
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin: 0 10px;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+}
+
+main {
+    width: 95%;
+    max-width: 600px;
+    padding-bottom: 40px;
+}
+
+/* STATISTIK KARTEN */
+.stats-overview {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    padding: 20px 40px;
+    border-radius: 18px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+}
+
+.stat-value {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 5px;
+}
+
+/* FILTER & DROPDOWNS */
+.filter-section {
+    background: var(--bg-card);
+    padding: 18px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+}
+
+.select-wrapper {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.select-wrapper label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-left: 4px;
+}
+
+select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    font-size: 1rem;
+    cursor: pointer;
+    appearance: none;
+    /* Pfeil-Icon für Dark Mode angepasst (weiß) */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* KALENDER GRID */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    background: var(--bg-card);
+    padding: 15px;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color);
+}
+
+.weekday {
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding-bottom: 12px;
+}
+
+.calendar-day {
+    aspect-ratio: 1 / 1;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.calendar-day.today {
+    border: 2px solid var(--primary-color);
+    background: rgba(55, 147, 255, 0.1);
+}
+
+.calendar-day.done {
+    background-color: rgba(76, 217, 100, 0.15);
+    border-color: var(--success-color);
+}
+
+.day-number {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.calendar-day.done .day-number {
+    color: var(--success-color);
+}
+
+.check-mark {
+    color: var(--success-color);
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+/* ANIMATIONEN */
+.animated-fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE OPTIMIERUNG */
+@media (max-width: 480px) {
+    .calendar-grid {
+        gap: 5px;
+        padding: 10px;
+    }
+    .stat-value {
+        font-size: 2rem;
+    }
+}
+
+/* INDEX SPEZIFISCHE STYLES */
+
+.section-label {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* User Buttons */
+.user-button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.user-btn {
+    flex: 1;
+    max-width: 150px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-main);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.user-btn.active {
+    border-color: var(--primary-color);
+    background: rgba(55, 147, 255, 0.1);
+    box-shadow: 0 0 15px rgba(55, 147, 255, 0.2);
+}
+
+.user-points {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* Task Karten */
+.section-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 10px;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.task-info p {
+    margin: 5px 0 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.complete-btn {
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: transform 0.2s;
+}
+
+.complete-btn:active {
+    transform: scale(0.95);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border-radius: 15px;
+    border: 1px dashed var(--border-color);
+}
+
+/* PROFIL STYLES */
+.profile-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.user-avatar {
+    width: 70px;
+    height: 70px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.points-badge {
+    color: var(--success-color);
+    font-weight: bold;
+    margin: 5px 0 0 0;
+}
+
+.personal-stats h3 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.stat-item {
+    background: var(--bg-card);
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+}
+
+.stat-count-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.empty-text {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 20px;
+}
+
+/* Container für User-Button + Profil-Link */
+.user-container {
+    position: relative;
+    flex: 1;
+    max-width: 160px;
+    display: flex;
+}
+
+.user-btn-main {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 20px 10px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: var(--text-main);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.user-container.active .user-btn-main {
+    border-color: var(--primary-color);
+    background: rgba(55, 147, 255, 0.1);
+    box-shadow: 0 0 15px rgba(55, 147, 255, 0.15);
+}
+
+.username {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Der kleine Profil-Button oben rechts */
+.profile-link-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: background 0.2s;
+    z-index: 2;
+}
+
+.profile-link-btn:hover {
+    background: var(--primary-color);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.room-selector {
+    width: auto;
+    min-width: 140px;
+    padding: 8px 30px 8px 12px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    background-color: var(--bg-card);
+}
+
+/* Fix für das mobile Layout */
+@media (max-width: 400px) {
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@media (min-width: 768px) {
+    main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    /* Die Filter-Bereiche sollen oben über die volle Breite gehen */
+    header, .view-nav, .filter-section, .stats-overview {
+        grid-column: span 2;
+    }
+}
+
+/* --- HISTORY & CALENDAR UPDATES --- */
+
+/* Basis-Grid für den Kalender (Wichtig für die Wochentage) */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 10px;
+}
+
+/* Container für die gesamte History-Seite */
+.calendar-container-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navigation und Filter-Bereich */
+.history-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.view-nav-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+}
+
+/* Styling für die einzelnen Monats-Blöcke */
+.month-grid-container {
+    margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.month-title {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+/* Statistiken oben */
+.stats-overview {
+    margin-bottom: 25px;
+}
+
+/* RESPONSIVE DESIGN: Jahresansicht in 2 Spalten auf großen Bildschirmen */
+@media (min-width: 900px) {
+    .calendar-container-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        align-items: start;
+    }
+
+    /* Diese Elemente sollen über die volle Breite (beide Spalten) gehen */
+    .full-width {
+        grid-column: span 2;
+    }
+}
+
+/* Unterstützung für die Wochentags-Überschriften */
+.weekday {
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: #aaa;
+    padding-bottom: 5px;
+}
+
+/* Styling für die einzelnen Tage */
+.calendar-day {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    position: relative;
+    font-size: 0.9rem;
+}
+
+.calendar-day.done {
+    background: rgba(76, 175, 80, 0.2);
+    border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.calendar-day.today {
+    border: 2px solid #2196F3;
+}
+
+.check-mark {
+    color: #4CAF50;
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+/* --- PERSONAL CARE SEKTION --- */
+
+:root {
+    --accent-personal: #bb86fc; /* Soft Purple */
+    --accent-personal-dark: #9965f4;
+    --bg-dark-card: #1e1e1e;
+}
+
+/* Header-Styling für Personal */
+.personal-header {
+    border-bottom: 2px solid var(--accent-personal);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+}
+
+/* Filter-Bereich */
+.filter-nav {
+    margin-bottom: 25px;
+    background: var(--bg-dark-card);
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-nav select {
+    background: #2c2c2c;
+    color: white;
+    border: 1px solid var(--accent-personal);
+    padding: 8px;
+    border-radius: 6px;
+}
+
+/* Spezielle Karten für Personal Tasks */
+.personal-card {
+    border-left: 5px solid var(--accent-personal) !important;
+    background: rgba(187, 134, 252, 0.05) !important;
+    margin-bottom: 12px;
+}
+
+.personal-btn {
+    background-color: var(--accent-personal) !important;
+    color: #000 !important;
+    font-weight: bold;
+}
+
+.personal-btn:hover {
+    background-color: var(--accent-personal-dark) !important;
+}
+
+/* Mini Calendar in Personal View */
+.mini-calendar {
+    margin-top: 40px;
+    background: var(--bg-dark-card);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.mini-calendar h3 {
+    margin-bottom: 15px;
+    color: var(--accent-personal);
+    font-size: 1.1rem;
+}
+
+.mini-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.mini-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #252525;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.mini-day.done {
+    background: rgba(187, 134, 252, 0.25);
+    color: var(--accent-personal);
+    border: 1px solid var(--accent-personal);
+    font-weight: bold;
+}
+
+.mini-day.today {
+    outline: 2px solid #fff;
+    color: #fff;
+}
+
+.mini-weekday {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--accent-personal);
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.start-1 { grid-column-start: 1; }
+.start-2 { grid-column-start: 2; }
+.start-3 { grid-column-start: 3; }
+.start-4 { grid-column-start: 4; }
+.start-5 { grid-column-start: 5; }
+.start-6 { grid-column-start: 6; }
+.start-7 { grid-column-start: 7; }
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.month-filter select {
+    background: #2c2c2c;
+    color: var(--accent-personal);
+    border: 1px solid var(--accent-personal);
+    border-radius: 4px;
+    padding: 5px;
+}
+
+:root {
+    --accent-household: #03dac6;
+    --accent-personal: #bb86fc;
+    --bg-card: #1e1e1e;
+}
+
+.profile-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--accent-personal), var(--accent-household));
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: #000;
+    font-weight: bold;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    border-bottom: 4px solid transparent;
+}
+
+.stat-card.household { border-color: var(--accent-household); }
+.stat-card.personal { border-color: var(--accent-personal); }
+
+.stat-val {
+    font-size: 2rem;
+    font-weight: bold;
+    display: block;
+    margin: 10px 0;
+}
+
+.stat-label {
+    color: #888;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.total-box {
+    background: #252525;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 30px;
+    color: #888;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #fff;
+}
+
+.profile-calendar-section {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 30px;
+}
+
+.filter-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-form select {
+    background: #2c2c2c;
+    color: white;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 6px;
+    flex: 1;
+}
+
+/* Die mini-grid Klassen hast du ja bereits für die Personal-Seite definiert */
+
+.profile-nav {
+    background: #1e1e1e;
+    padding: 15px 0;
+    border-bottom: 1px solid #333;
+    margin-bottom: 30px;
+}
+
+.nav-container {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-link {
+    color: #888;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--accent-personal, #bb86fc);
+}
