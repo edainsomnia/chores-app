@@ -1,9 +1,8 @@
-const CACHE_NAME = 'chores-app-v1';
 const ASSETS_TO_CACHE = [
-    '/',
-    '/static/style.css',
-    '/static/icon.png',
-    '/static/manifest.json'
+    "/chores-app/",
+    "/chores-app/static/style.css",
+    "/chores-app/static/icon.png",
+    "/chores-app/static/manifest.json"
 ];
 
 // 1. Installation: Dateien in den Cache laden
@@ -29,4 +28,5 @@ self.addEventListener('fetch', (event) => {
             return response || fetch(event.request);
         })
     );
+
 });
