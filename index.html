@@ -12,7 +12,7 @@
 
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+            navigator.serviceWorker.register('/chores-app/sw.js')
                 .then(() => console.log("Service Worker registriert"))
                 .catch(err => console.log("Service Worker Fehler", err));
             }
@@ -121,4 +121,5 @@
         }
     </script>
 </body>
+
 </html>
