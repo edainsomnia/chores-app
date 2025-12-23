@@ -1,3 +1,4 @@
+const CACHE_NAME = 'chores-app-v1';
 const ASSETS_TO_CACHE = [
     "/chores-app/",
     "/chores-app/static/style.css",
@@ -30,3 +31,4 @@ self.addEventListener('fetch', (event) => {
     );
 
 });
+
