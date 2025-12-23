@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chores-app-v2'; // Version erhöht, um alten Cache zu leeren
+const CACHE_NAME = 'chores-app-v3'; // Version erhöht, um alten Cache zu leeren
 
 // Die Pfade müssen EXAKT mit deinen Dateien auf GitHub übereinstimmen
 const ASSETS_TO_CACHE = [
@@ -47,4 +47,5 @@ self.addEventListener('fetch', (event) => {
         })
     );
 });
+
 
