@@ -6,10 +6,10 @@
   "background_color": "#121212",
   "theme_color": "#bb86fc",
   "icons": [
-    {
-      "src": "static/icon.png", 
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  {
+    "src": "/chores-app/static/icon.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }
+]
 }
