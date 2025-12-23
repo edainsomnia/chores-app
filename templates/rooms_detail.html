@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1.1">
+    <title>Statistik: {{ room.name }}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static',filename='icon.png') }}">
+    <meta name="apple-mobile-web-app-title" content="Haushalt">
+    <meta name="apple-mobile-web-app-capable"content="yes">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#bb86fc">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+                .then(() => console.log("Service Worker registriert"))
+                .catch(err => console.log("Service Worker Fehler", err));
+            }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>📊 {{ room.name }}</h1>
+        <p class="user-info">Detaillierte Aufgabenübersicht</p>
+        <nav>
+            <a href="/rooms">⬅ Zurück</a>
+            <a href="/">🏠 Home</a>
+        </nav>
+    </header>
+
+    {% for task in room.tasks %}
+    <div class="card">
+        <div class="card-header">
+            <h3>{{ task.title }}</h3>
+            <a href="/delete_task/{{ task.id }}" 
+               class="delete-link"
+               onclick="return confirm('Möchtest du die Aufgabe \'{{ task.title }}\' wirklich löschen?')">
+               🗑️ Löschen
+            </a>
+        </div>
+
+        <p style="font-size: 0.8em; color: var(--text-muted); margin-top: -10px; margin-bottom: 15px;">
+            Intervall: alle {{ task.interval_value }} 
+            {% if task.interval_type == 'days' %} Tage {% elif task.interval_type == 'weeks' %} Wochen {% else %} Monate {% endif %}
+            | Wert: {{ task.points_worth }} Pkt
+        </p>
+        
+        <div id="month-{{ task.id }}">
+            <span class="view-toggle" onclick="toggleView('{{ task.id }}')">📅 Zur Jahresübersicht wechseln</span>
+            <div class="habit-grid">
+                {% for d in last_30_days %}
+                    <div class="day {% if d in task_logs[task.id] %}done{% endif %}" 
+                         title="{{ d.strftime('%d.%m.%Y') }}"></div>
+                {% endfor %}
+            </div>
+            <p style="font-size: 0.7em; color: var(--text-muted);">Letzte 30 Tage</p>
+        </div>
+
+        <div id="year-{{ task.id }}" class="hidden">
+            <span class="view-toggle" onclick="toggleView('{{ task.id }}')">📆 Zur Monatsübersicht wechseln</span>
+            <div class="year-grid">
+                {% for d in days_in_year %}
+                    <div class="year-day {% if d in task_logs[task.id] %}done{% endif %}" 
+                         title="{{ d.strftime('%d.%m.%Y') }}"></div>
+                {% endfor %}
+            </div>
+            <p style="font-size: 0.7em; color: var(--text-muted);">Jahresübersicht ({{ days_in_year[0].year }})</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="card" style="text-align: center;">
+        <p>In diesem Raum wurden noch keine Aufgaben angelegt.</p>
+        <a href="/" class="btn-add" style="text-decoration: none; display: inline-block;">Erste Aufgabe erstellen</a>
+    </div>
+    {% endfor %}
+
+    <script>
+        function toggleView(taskId) {
+            const monthDiv = document.getElementById('month-' + taskId);
+            const yearDiv = document.getElementById('year-' + taskId);
+            
+            if (monthDiv.classList.contains('hidden')) {
+                monthDiv.classList.remove('hidden');
+                yearDiv.classList.add('hidden');
+            } else {
+                monthDiv.classList.add('hidden');
+                yearDiv.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Household - History</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#bb86fc">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+                .then(() => console.log("Service Worker registriert"))
+                .catch(err => console.log("Service Worker Fehler", err));
+            }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>{{ view_title }}</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Household</a> | 
+            <a href="{{ url_for('personal_tasks') }}">✨ Personal Care</a> | 
+            <a href="{{ url_for('scoreboard') }}">Scoreboard</a> |
+            <a href="{{ url_for('history') }}">History</a>
+        </nav>
+    </header>
+
+    <main class="calendar-container-wrapper">
+        <div class="full-width">
+            <section class="stats-overview">
+                <div class="stat-card">
+                    <span class="stat-value">{{ total_count }}</span>
+                    <span class="stat-label">Tasks completed in {{ year }}</span>
+                </div>
+            </section>
+
+            <div class="history-controls">
+                <form method="GET" action="{{ url_for('history') }}" class="view-nav-group">
+                    <input type="hidden" name="room_id" value="{{ selected_room_id or '' }}">
+                    <input type="hidden" name="task_id" value="{{ selected_task_id or '' }}">
+
+                    <select name="view_mode" onchange="this.form.submit()">
+                        <option value="monthly" {% if view_mode == 'monthly' %}selected{% endif %}>Monthly View</option>
+                        <option value="yearly" {% if view_mode == 'yearly' %}selected{% endif %}>Yearly Overview</option>
+                    </select>
+
+                    <select name="year" onchange="this.form.submit()">
+                        {% for y in range(2024, 2027) %}
+                            <option value="{{ y }}" {% if year == y %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+
+                    {% if view_mode == 'monthly' %}
+                    <select name="month" onchange="this.form.submit()">
+                        {% for m_name in month_names %}
+                            <option value="{{ loop.index }}" {% if month == loop.index %}selected{% endif %}>
+                                {{ m_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {% endif %}
+                </form>
+
+                <section class="filter-section">
+                    <form method="GET" action="{{ url_for('history') }}" id="filterForm">
+                        <input type="hidden" name="view_mode" value="{{ view_mode }}">
+                        <input type="hidden" name="year" value="{{ year }}">
+                        <input type="hidden" name="month" value="{{ month }}">
+                        
+                        <div class="select-wrapper">
+                            <label for="room_id">Select Room:</label>
+                            <select name="room_id" id="room_id" onchange="resetTaskAndSubmit()">
+                                <option value="">-- All Rooms --</option>
+                                {% for room in rooms %}
+                                    <option value="{{ room.id }}" {% if selected_room_id == room.id|string %}selected{% endif %}>
+                                        {{ room.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        {% if selected_room_id %}
+                        <div class="select-wrapper animated-fade-in">
+                            <label for="task_id">Filter Task:</label>
+                            <select name="task_id" id="task_id" onchange="this.form.submit()">
+                                <option value="all" {% if selected_task_id == 'all' or not selected_task_id %}selected{% endif %}>
+                                    All tasks in this room
+                                </option>
+                                {% for task in current_room_tasks %}
+                                    <option value="{{ task.id }}" {% if selected_task_id == task.id|string %}selected{% endif %}>
+                                        {{ task.title }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                    </form>
+                </section>
+            </div>
+        </div>
+
+        {% for month_data in history_data %}
+        <div class="month-grid-container">
+            <h3 class="month-title">{{ month_data.month_name }}</h3>
+            <div class="calendar-grid">
+                <div class="weekday">Mon</div>
+                <div class="weekday">Tue</div>
+                <div class="weekday">Wed</div>
+                <div class="weekday">Thu</div>
+                <div class="weekday">Fri</div>
+                <div class="weekday">Sat</div>
+                <div class="weekday">Sun</div>
+
+                {% for day_info in month_data.days %}
+                    <div class="calendar-day 
+                        {% if day_info.date in logs %}done{% endif %} 
+                        {% if day_info.date == day_info.date.today() %}today{% endif %}"
+                        {% if loop.first %}style="grid-column-start: {{ day_info.weekday + 1 }};"{% endif %}>
+                        
+                        <span class="day-number">{{ day_info.date.day }}</span>
+                        
+                        {% if day_info.date in logs %}
+                            <span class="check-mark">✔</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </main>
+
+    <script>
+        function resetTaskAndSubmit() {
+            const taskSelect = document.getElementById('task_id');
+            if (taskSelect) {
+                taskSelect.value = 'all';
+            }
+            document.getElementById('filterForm').submit();
+        }
+    </script>
+</body>
+</html>

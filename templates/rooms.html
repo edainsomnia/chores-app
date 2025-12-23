@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1.1">
+    <title>Räume - Haushalts-Manager</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static',filename='icon.png') }}">
+    <meta name="apple-mobile-web-app-title" content="Haushalt">
+    <meta name="apple-mobile-web-app-capable"content="yes">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#bb86fc">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+                .then(() => console.log("Service Worker registriert"))
+                .catch(err => console.log("Service Worker Fehler", err));
+            }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>📍 Deine Räume</h1>
+        <p class="user-info">Wähle einen Raum für Details</p>
+        <nav>
+            <a href="/">🏠 Home</a>
+            <a href="/scoreboard">🏆 Scoreboard</a>
+        </nav>
+    </header>
+
+    <div class="grid-container">
+        {% for room in rooms %}
+            <a href="/room/{{ room.id }}" class="card room-link" style="text-decoration: none;">
+                <h2 style="color: var(--accent); margin-bottom: 5px;">{{ room.name }}</h2>
+                <p style="color: var(--text-muted); font-size: 0.9em;">
+                    {{ room.tasks|length }} Aufgabe(n) hinterlegt
+                </p>
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if not rooms %}
+    <div class="card" style="text-align: center;">
+        <p>Noch keine Räume in der Datenbank.</p>
+    </div>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Household</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#bb86fc">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+                .then(() => console.log("Service Worker registriert"))
+                .catch(err => console.log("Service Worker Fehler", err));
+            }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Points Duel</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a> | 
+            <a href="{{ url_for('history') }}">History</a> |
+            <a href="{{ url_for('scoreboard') }}">Score</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="scoreboard-container">
+            <h2 style="text-align: center; margin-bottom: 30px;">Who is leading this month?</h2>
+
+            <div class="score-list">
+                {% for user in users %}
+                <div class="score-card {% if loop.first and user.points > 0 %}winner{% endif %}">
+                    <div class="rank">
+                        {% if loop.first and user.points > 0 %}
+                            <span class="crown">👑</span>
+                        {% else %}
+                            <span class="number">#{{ loop.index }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="user-details">
+                        <span class="username">{{ user.username }}</span>
+                    </div>
+
+                    <div class="user-points">
+                        <span class="pts">{{ user.points }}</span>
+                        <span class="label">Points</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="reward-box">
+                <h3>🏆 Monthly Reward</h3>
+                <p>The winner has a Biggus Dickus!</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

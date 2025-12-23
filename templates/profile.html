@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil von {{ user.username }}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#bb86fc">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+                .then(() => console.log("Service Worker registriert"))
+                .catch(err => console.log("Service Worker Fehler", err));
+            }
+    </script>
+</head>
+<body class="dark-mode">
+    <div class="profile-container">
+        <nav class="profile-nav">
+            <div class="nav-container">
+             <a href="{{ url_for('index') }}" class="nav-link">🏠 Home</a>
+              <a href="{{ url_for('personal_tasks') }}" class="nav-link">✨ Personal Care</a>
+             <a href="{{ url_for('history') }}" class="nav-link">📜 History</a>
+           </div>
+        </nav>
+        <header class="profile-header">
+            <div class="avatar-circle">
+                {{ user.username[0] | upper }}
+            </div>
+            <h1>{{ user.username }}'s Dashboard</h1>
+        </header>
+
+        <main class="profile-main">
+            <div class="stats-grid">
+             <div class="stat-card household-theme">
+                 <span class="stat-label">🏠 Haushalt</span>
+                  <span class="stat-val">{{ h_pts }}</span>
+             </div>
+             <div class="stat-card personal-theme">
+                  <span class="stat-label">✨ Self-Care</span>
+                   <span class="stat-val">{{ p_pts }}</span>
+              </div>
+         </div>
+
+          <section class="profile-calendar-section">
+              <h3>Aktivitäts-Log</h3>
+        
+             <form method="GET" action="{{ url_for('profile', username=user.username) }}" class="filter-form">
+                 <select name="month" onchange="this.form.submit()">
+                      {% for m in range(1, 13) %}
+                      <option value="{{ m }}" {% if m == view_month %}selected{% endif %}>{{ month_names[m-1] }}</option>
+                        {% endfor %}
+                 </select>
+
+                 <select name="room_id" onchange="this.form.submit()">
+                     <option value="all" {% if selected_room_id == 'all' %}selected{% endif %}>Alle Aufgaben</option>
+                     <option value="personal" {% if selected_room_id == 'personal' %}selected{% endif %}>Nur Self-Care ✨</option>
+                     <optgroup label="Haushalt Räume">
+                         {% for room in rooms %}
+                          <option value="{{ room.id }}" {% if selected_room_id == room.id|string %}selected{% endif %}>{{ room.name }}</option>
+                           {% endfor %}
+                     </optgroup>
+                 </select>
+                 <input type="hidden" name="year" value="{{ view_year }}">
+             </form>
+
+             <div class="mini-grid">
+                 <div class="mini-weekday">Mo</div><div class="mini-weekday">Di</div><div class="mini-weekday">Mi</div>
+                  <div class="mini-weekday">Do</div><div class="mini-weekday">Fr</div><div class="mini-weekday">Sa</div>
+                   <div class="mini-weekday">So</div>
+
+                 {% for day in days %}
+                 <div class="mini-day {% if day.date in logs %}done{% endif %} {% if day.date == today %}today{% endif %} start-{{ day.weekday + 1 if loop.first else '' }}">
+                     {{ day.date.day }}
+                 </div>
+                 {% endfor %}
+             </div>
+          </section>
+        </main>
+
+    </div>
+</body>
+</html>

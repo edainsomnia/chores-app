@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='icon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static',filename='icon.png') }}">
+    <meta name="apple-mobile-web-app-title" content="Haushalt">
+    <meta name="apple-mobile-web-app-capable"content="yes">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#bb86fc">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+                .then(() => console.log("Service Worker registriert"))
+                .catch(err => console.log("Service Worker Fehler", err));
+            }
+    </script>
+</head>
+<body>
+    <h1>Statistik für: {{ task.title }}</h1>
+    <div class="grid">
+        {% for d in days %}
+            <div class="day {% if d in done_dates %}done{% endif %}" title="{{ d }}"></div>
+        {% endfor %}
+    </div>
+    <p>Grün markiert sind die Tage, an denen du fleißig warst.</p>
+    <a href="/">Zurück</a>
+</body>
+</html>
