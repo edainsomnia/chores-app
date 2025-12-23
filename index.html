@@ -7,12 +7,12 @@
     <link rel="icon" type="image/png" href="{{ url_for('static',filename='icon.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static',filename='icon.png') }}">
     <link rel="stylesheet" href="static/style.css">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#bb86fc">
 
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}")
+            navigator.serviceWorker.register('sw.js')
                 .then(() => console.log("Service Worker registriert"))
                 .catch(err => console.log("Service Worker Fehler", err));
             }
@@ -123,4 +123,5 @@
 </body>
 
 </html>
+
 
