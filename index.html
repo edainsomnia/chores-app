@@ -11,21 +11,24 @@
     <meta name="theme-color" content="#bb86fc">
 
     <script>
+        // Service Worker Registrierung (sauber ohne Syntaxfehler)
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(() => console.log("Service Worker registriert"))
-                .catch(err => console.log("Service Worker Fehler", err));
-            }
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log("Service Worker registriert", reg))
+                    .catch(err => console.log("Service Worker Fehler", err));
+            });
+        }
     </script>
 </head>
 <body>
     <header>
         <h1>Household Check 🧹</h1>
         <nav>
-           <a href="{{ url_for('index') }}">Household</a> | 
-           <a href="{{ url_for('personal_tasks') }}">✨ Personal Care</a> | 
-           <a href="{{ url_for('scoreboard') }}">Scoreboard</a> |
-           <a href="{{ url_for('history') }}">History</a>
+            <a href="index.html">Household</a> | 
+            <a href="personal.html">✨ Personal Care</a> | 
+            <a href="scoreboard.html">Scoreboard</a> |
+            <a href="history.html">History</a>
         </nav>
     </header>
 
@@ -33,68 +36,41 @@
         <section class="user-selection">
             <p class="section-label">Who is active?</p>
             <div class="user-button-group">
-                {% for user in users %}
-                    <div class="user-container {% if active_user.id == user.id %}active{% endif %}">
-                        <a href="{{ url_for('switch_user', user_id=user.id) }}" class="user-btn-main">
-                            {{ user.username }}
-                        </a>
-                        <a href="{{ url_for('profile', username=user.username) }}" class="profile-link-btn" title="View Profile">
-                            👤
-                        </a>
-                    </div>
-                {% endfor %}
+                <div class="user-container active">
+                    <a href="#" class="user-btn-main">Eda</a>
+                    <a href="profile.html" class="profile-link-btn" title="View Profile">👤</a>
+                </div>
             </div>
         </section>
 
         <section class="task-section">
             <div class="section-header">
                 <h2 class="section-title">Open Chores</h2>
-                
-                {% if tasks %}
                 <select id="roomFilter" onchange="updateFilter(this.value)" class="room-selector">
                     <option value="all">All Rooms</option>
-                    {% for room in rooms %}
-                        <option value="{{ room.name|slugify }}" {% if request.args.get('filter') == room.name|slugify %}selected{% endif %}>
-                            {{ room.name }}
-                        </option>
-                    {% endfor %}
+                    <option value="kitchen">Kitchen</option>
+                    <option value="living-room">Living Room</option>
                 </select>
-                {% endif %}
             </div>
 
-            {% if not tasks %}
-                <div class="empty-state">
-                    <p>All done! Time to relax. ☕</p>
+            <div class="task-list" id="taskList">
+                <div class="task-card" data-room="kitchen">
+                    <div class="task-info">
+                        <h3>Dishwasher</h3>
+                        <p>Kitchen • 10 Points</p>
+                    </div>
+                    <a href="#" class="complete-btn">Done</a>
                 </div>
-            {% else %}
-                <div class="task-list" id="taskList">
-                    {% for task in tasks %}
-                        <div class="task-card" data-room="{{ task.room.name|slugify }}">
-                            <div class="task-info">
-                                <h3>{{ task.title }}</h3>
-                                <p>{{ task.room.name }} • {{ task.points_worth }} Points</p>
-                            </div>
-                            <a href="{{ url_for('complete_task', task_id=task.id, filter=request.args.get('filter', 'all')) }}" class="complete-btn">
-                                Done
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+            </div>
         </section>
     </main>
 
     <script>
-        // Run on page load to show only filtered tasks
-        window.onload = function() {
-            applyFilter();
-        };
-
         function updateFilter(value) {
-            // Reload page with the selected filter in the URL
             const url = new URL(window.location);
             url.searchParams.set('filter', value);
-            window.location.href = url.href;
+            window.history.pushState({}, '', url); // Ändert URL ohne Neuladen
+            applyFilter();
         }
 
         function applyFilter() {
@@ -112,16 +88,11 @@
             });
         }
 
-        // Service Worker registration
-        navigator.serviceWorker.register('sw.js') 
-  .then(reg => console.log('Service Worker registriert', reg))
-  .catch(err => console.log('Fehler', err));
-            });
-        }
+        window.onload = applyFilter;
     </script>
 </body>
-
 </html>
+
 
 
 
