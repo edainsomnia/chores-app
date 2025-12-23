@@ -1,8 +1,8 @@
 {
   "name": "Chores App",
   "short_name": "Chores",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/chores-app/"
+  "scope": "/chores-app/",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#bb86fc",
