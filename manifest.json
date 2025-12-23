@@ -8,7 +8,7 @@
   "theme_color": "#bb86fc",
   "icons": [
     {
-      "src": "/static/icon.png",
+      "src": "static/icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
